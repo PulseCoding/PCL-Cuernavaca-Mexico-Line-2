@@ -1,8 +1,8 @@
 {
-  "name": "modbus",
+  "name": "packer",
   "version": "0.0.1",
-  "description": "Byd line 56",
-  "main": "main_v0.0.js",
+  "description": "",
+  "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
