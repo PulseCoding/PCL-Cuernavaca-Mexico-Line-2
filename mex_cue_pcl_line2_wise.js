@@ -248,7 +248,82 @@ var client3 = modbus.client.tcp.complete({
     bits = newNum.join("");
     return parseInt(bits, 2);
   };
+  var CapperVerify = function(){
+        try{
+          CapperReject = fs.readFileSync('CapperRejected.json');
+          if(CapperReject.toString().indexOf('}') > 0 && CapperReject.toString().indexOf('{\"rejected\":') != -1){
+            CapperReject = JSON.parse(CapperReject);
+          }else{
+            throw 12121212;
+          }
+        }catch(err){
+          if(err.code == 'ENOENT' || err == 12121212){
+            fs.writeFileSync('CapperRejected.json','{"rejected":0}'); //NOTE: Change the object to what it usually is.
+            CapperReject = {
+              rejected : 0
+            };
+          }
+        }
+      };
 
+  CapperVerify();
+  var DepuckerVerify = function(){
+        try{
+          DepuckerReject = fs.readFileSync('DepuckerRejected.json');
+          if(DepuckerReject.toString().indexOf('}') > 0 && DepuckerReject.toString().indexOf('{\"rejected\":') != -1){
+            DepuckerReject = JSON.parse(DepuckerReject);
+          }else{
+            throw 12121212;
+          }
+        }catch(err){
+          if(err.code == 'ENOENT' || err == 12121212){
+            fs.writeFileSync('DepuckerRejected.json','{"rejected":0}'); //NOTE: Change the object to what it usually is.
+            DepuckerReject = {
+              rejected : 0
+            };
+          }
+        }
+      };
+
+  DepuckerVerify();
+  var LabellerVerify = function(){
+        try{
+          LabellerReject = fs.readFileSync('LabellerRejected.json');
+          if(LabellerReject.toString().indexOf('}') > 0 && LabellerReject.toString().indexOf('{\"rejected\":') != -1){
+            LabellerReject = JSON.parse(LabellerReject);
+          }else{
+            throw 12121212;
+          }
+        }catch(err){
+          if(err.code == 'ENOENT' || err == 12121212){
+            fs.writeFileSync('LabellerRejected.json','{"rejected":0}'); //NOTE: Change the object to what it usually is.
+            LabellerReject = {
+              rejected : 0
+            };
+          }
+        }
+      };
+
+  LabellerVerify();
+  var CheckweigherVerify = function(){
+        try{
+          CheckweigherReject = fs.readFileSync('CheckweigherRejected.json');
+          if(CheckweigherReject.toString().indexOf('}') > 0 && CheckweigherReject.toString().indexOf('{\"rejected\":') != -1){
+            CheckweigherReject = JSON.parse(CheckweigherReject);
+          }else{
+            throw 12121212;
+          }
+        }catch(err){
+          if(err.code == 'ENOENT' || err == 12121212){
+            fs.writeFileSync('CheckweigherRejected.json','{"rejected":0}'); //NOTE: Change the object to what it usually is.
+            CheckweigherReject = {
+              rejected : 0
+            };
+          }
+        }
+      };
+
+  CheckweigherVerify();
   setInterval(function(){
     //PubNub --------------------------------------------------------------------------------------------------------------------
             if(secPubNub>=60*5){
@@ -259,7 +334,7 @@ var client3 = modbus.client.tcp.complete({
                 for ( k=0;k<files.length;k++){//Verificar los archivos
                   var stats = fs.statSync("C:/PULSE/L2_LOGS/"+files[k]);
                   var mtime = new Date(stats.mtime).getTime();
-                  if (mtime< (Date.now() - (15*60*1000))&&files[k].indexOf("Serialbox")==-1){
+                  if (mtime< (Date.now() - (15*60*1000))&&files[k].indexOf("serialbox")==-1){
                     flagInfo2Send=1;
                     text2send[i]=files[k];
                     i++;
