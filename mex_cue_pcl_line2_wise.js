@@ -334,7 +334,7 @@ var client3 = modbus.client.tcp.complete({
                 for ( k=0;k<files.length;k++){//Verificar los archivos
                   var stats = fs.statSync("C:/PULSE/L2_LOGS/"+files[k]);
                   var mtime = new Date(stats.mtime).getTime();
-                  if (mtime< (Date.now() - (15*60*1000))&&files[k].indexOf("serialbox")==-1){
+                  if (mtime< (Date.now() - (15*60*1000))&&files[k].indexOf("Serialbox")==-1){
                     flagInfo2Send=1;
                     text2send[i]=files[k];
                     i++;
