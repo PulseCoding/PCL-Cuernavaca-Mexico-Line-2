@@ -735,7 +735,7 @@ client2.on('connect', function(err) {
                 ST: Depuckerstate,
                 CPQI: CntInDepucker,
                 CPQO: CntOutDepucker,
-                CPQR: DepuckerdeltaRejected,
+                //CPQR: DepuckerdeltaRejected,
                 SP: Depuckerspeed
               };
               if (DepuckerflagPrint == 1) {
