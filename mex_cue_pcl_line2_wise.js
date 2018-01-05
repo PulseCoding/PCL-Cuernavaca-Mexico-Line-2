@@ -161,27 +161,27 @@ var CasePackerct = null,
     CasePackerWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
     CasePackerflagRunning = false,
     CasePackerRejectFlag = false;
-    var Checkweigherct = null,
-        Checkweigherresults = null,
-        Checkweigheractual = 0,
-        Checkweighertime = 0,
-        Checkweighersec = 0,
-        CheckweigherflagStopped = false,
-        Checkweigherstate = 0,
-        Checkweigherspeed = 0,
-        CheckweigherspeedTemp = 0,
-        CheckweigherflagPrint = 0,
-        CheckweighersecStop = 0,
-        CheckweigherdeltaRejected = null,
-        CheckweigherONS = 0,
-        CheckweigherStartTime = null,
-        CheckweighertimeStop = 30, //NOTE: Timestop
-        CheckweigherWorktime = 60, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-        CheckweigherflagRunning = false,
-        CheckweigherRejectFlag = false,
-        CheckweigherReject,
-        CntOutCheckweigher=null,
-        CntInCheckweigher=null;
+var Checkweigherct = null,
+    Checkweigherresults = null,
+    Checkweigheractual = 0,
+    Checkweighertime = 0,
+    Checkweighersec = 0,
+    CheckweigherflagStopped = false,
+    Checkweigherstate = 0,
+    Checkweigherspeed = 0,
+    CheckweigherspeedTemp = 0,
+    CheckweigherflagPrint = 0,
+    CheckweighersecStop = 0,
+    CheckweigherdeltaRejected = null,
+    CheckweigherONS = 0,
+    CheckweigherStartTime = null,
+    CheckweighertimeStop = 30, //NOTE: Timestop
+    CheckweigherWorktime = 60, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
+    CheckweigherflagRunning = false,
+    CheckweigherRejectFlag = false,
+    CheckweigherReject,
+    CntOutCheckweigher=null,
+    CntInCheckweigher=null;
 var CntOutEOL=null,
     secEOL=0;
 
@@ -334,7 +334,7 @@ var client3 = modbus.client.tcp.complete({
                 for ( k=0;k<files.length;k++){//Verificar los archivos
                   var stats = fs.statSync("C:/PULSE/L2_LOGS/"+files[k]);
                   var mtime = new Date(stats.mtime).getTime();
-                  if (mtime< (Date.now() - (15*60*1000))&&files[k].indexOf("serialbox")==-1){
+                  if (mtime< (Date.now() - (15*60*1000))&&files[k].indexOf("Serialbox")==-1){
                     flagInfo2Send=1;
                     text2send[i]=files[k];
                     i++;
