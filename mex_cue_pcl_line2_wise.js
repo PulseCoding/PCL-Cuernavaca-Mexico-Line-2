@@ -249,6 +249,25 @@ var client3 = modbus.client.tcp.complete({
     bits = newNum.join("");
     return parseInt(bits, 2);
   };
+  var CoolingTunelVerify = function(){
+        try{
+          CoolingTunelReject = fs.readFileSync('CoolingTunelRejected.json');
+          if(CoolingTunelReject.toString().indexOf('}') > 0 && CoolingTunelReject.toString().indexOf('{\"rejected\":') != -1){
+            CoolingTunelReject = JSON.parse(CoolingTunelReject);
+          }else{
+            throw 12121212;
+          }
+        }catch(err){
+          if(err.code == 'ENOENT' || err == 12121212){
+            fs.writeFileSync('CoolingTunelRejected.json','{"rejected":0}'); //NOTE: Change the object to what it usually is.
+            CoolingTunelReject = {
+              rejected : 0
+            };
+          }
+        }
+      };
+
+  CoolingTunelVerify();
   var CapperVerify = function(){
         try{
           CapperReject = fs.readFileSync('CapperRejected.json');
