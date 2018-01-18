@@ -605,7 +605,7 @@ client2.on('connect', function(err) {
                         ST: CoolingTunelstate,
                         CPQI : CntInCoolingTunel,
                         CPQO : CntOutCoolingTunel,
-                        CPQR : CoolingTuneldeltaRejected,
+                        //CPQR : CoolingTuneldeltaRejected,
                         SP: CoolingTunelspeed
                       }
                       if (CoolingTunelflagPrint == 1) {
