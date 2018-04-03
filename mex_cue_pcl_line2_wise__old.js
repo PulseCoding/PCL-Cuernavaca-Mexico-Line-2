@@ -1,3 +1,4 @@
+
 var fs = require('fs');
 var modbus = require('jsmodbus');
 var PubNub = require('pubnub');
@@ -60,25 +61,26 @@ var Fillerct = null,
         }
       }
     })();
-var CoolingTunelct = null,
-    CoolingTunelresults = null,
-    CntInCoolingTunel = null,
-    CntOutCoolingTunel = null,
-    CoolingTunelactual = 0,
-    CoolingTuneltime = 0,
-    CoolingTunelsec = 0,
-    CoolingTunelflagStopped = false,
-    CoolingTunelstate = 0,
-    CoolingTunelspeed = 0,
-    CoolingTunelspeedTemp = 0,
-    CoolingTunelflagPrint = 0,
-    CoolingTunelsecStop = 0,
-    CoolingTuneldeltaRejected = null,
-    CoolingTunelONS = false,
-    CoolingTuneltimeStop = 60, //NOTE: Timestop
-    CoolingTunelWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
-    CoolingTunelflagRunning = false,
-    CoolingTunelRejectFlag = false;
+    var CoolingTunelct = null,
+        CoolingTunelresults = null,
+        CntInCoolingTunel = null,
+        CntOutCoolingTunel = null,
+        CoolingTunelactual = 0,
+        CoolingTuneltime = 0,
+        CoolingTunelsec = 0,
+        CoolingTunelflagStopped = false,
+        CoolingTunelstate = 0,
+        CoolingTunelspeed = 0,
+        CoolingTunelspeedTemp = 0,
+        CoolingTunelflagPrint = 0,
+        CoolingTunelsecStop = 0,
+        CoolingTuneldeltaRejected = null,
+        CoolingTunelONS = false,
+        CoolingTuneltimeStop = 60, //NOTE: Timestop
+        CoolingTunelWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+        CoolingTunelflagRunning = false,
+        CoolingTunelRejectFlag = false,
+        CoolingTunelReject;
 var Capperct = null,
     Capperresults = null,
     Capperactual = 0,
@@ -248,6 +250,25 @@ var client3 = modbus.client.tcp.complete({
     bits = newNum.join("");
     return parseInt(bits, 2);
   };
+  var CoolingTunelVerify = function(){
+        try{
+          CoolingTunelReject = fs.readFileSync('CoolingTunelRejected.json');
+          if(CoolingTunelReject.toString().indexOf('}') > 0 && CoolingTunelReject.toString().indexOf('{\"rejected\":') != -1){
+            CoolingTunelReject = JSON.parse(CoolingTunelReject);
+          }else{
+            throw 12121212;
+          }
+        }catch(err){
+          if(err.code == 'ENOENT' || err == 12121212){
+            fs.writeFileSync('CoolingTunelRejected.json','{"rejected":0}'); //NOTE: Change the object to what it usually is.
+            CoolingTunelReject = {
+              rejected : 0
+            };
+          }
+        }
+      };
+
+  CoolingTunelVerify();
   var CapperVerify = function(){
         try{
           CapperReject = fs.readFileSync('CapperRejected.json');
@@ -528,68 +549,77 @@ client2.on('connect', function(err) {
                 CntInDepucker = joinWord(resp.register[4], resp.register[5]);
                 CntInLabeller = joinWord(resp.register[6], resp.register[7]);
                 CntOutDepucker=joinWord(resp.register[6], resp.register[7]);
-        //------------------------------------------CoolingTunel----------------------------------------------
-              CoolingTunelct = CntOutCoolingTunel // NOTE: igualar al contador de salida
-              if (!CoolingTunelONS && CoolingTunelct) {
-                CoolingTunelspeedTemp = CoolingTunelct
-                CoolingTunelsec = Date.now()
-                CoolingTunelONS = true
-                CoolingTuneltime = Date.now()
-              }
-              if(CoolingTunelct > CoolingTunelactual){
-                if(CoolingTunelflagStopped){
-                  CoolingTunelspeed = CoolingTunelct - CoolingTunelspeedTemp
-                  CoolingTunelspeedTemp = CoolingTunelct
-                  CoolingTunelsec = Date.now()
-                  CoolingTuneldeltaRejected = null
-                  CoolingTunelRejectFlag = false
-                  CoolingTuneltime = Date.now()
-                }
-                CoolingTunelsecStop = 0
-                CoolingTunelstate = 1
-                CoolingTunelflagStopped = false
-                CoolingTunelflagRunning = true
-              } else if( CoolingTunelct == CoolingTunelactual ){
-                if(CoolingTunelsecStop == 0){
-                  CoolingTuneltime = Date.now()
-                  CoolingTunelsecStop = Date.now()
-                }
-                if( ( Date.now() - ( CoolingTuneltimeStop * 1000 ) ) >= CoolingTunelsecStop ){
-                  CoolingTunelspeed = 0
-                  CoolingTunelstate = 2
-                  CoolingTunelspeedTemp = CoolingTunelct
-                  CoolingTunelflagStopped = true
-                  CoolingTunelflagRunning = false
-                  CoolingTunelflagPrint = 1
-                }
-              }
-              CoolingTunelactual = CoolingTunelct
-              if(Date.now() - 60000 * CoolingTunelWorktime >= CoolingTunelsec && CoolingTunelsecStop == 0){
-                if(CoolingTunelflagRunning && CoolingTunelct){
-                  CoolingTunelflagPrint = 1
-                  CoolingTunelsecStop = 0
-                  CoolingTunelspeed = CoolingTunelct - CoolingTunelspeedTemp
-                  CoolingTunelspeedTemp = CoolingTunelct
-                  CoolingTunelsec = Date.now()
-                }
-              }
-              CoolingTunelresults = {
-                ST: CoolingTunelstate,
-                CPQI : CntInCoolingTunel,
-                CPQO : CntOutCoolingTunel,
-                SP: CoolingTunelspeed
-              }
-              if (CoolingTunelflagPrint == 1) {
-                for (var key in CoolingTunelresults) {
-                  if( CoolingTunelresults[key] != null && ! isNaN(CoolingTunelresults[key]) )
-                  //NOTE: Cambiar path
-                  fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_CoolingTunel_l2.log', 'tt=' + CoolingTuneltime + ',var=' + key + ',val=' + CoolingTunelresults[key] + '\n')
-                }
-                CoolingTunelflagPrint = 0
-                CoolingTunelsecStop = 0
-                CoolingTuneltime = Date.now()
-              }
-        //------------------------------------------CoolingTunel----------------------------------------------
+                //------------------------------------------CoolingTunel----------------------------------------------
+                      CoolingTunelct = CntOutCoolingTunel // NOTE: igualar al contador de salida
+                      if (!CoolingTunelONS && CoolingTunelct) {
+                        CoolingTunelspeedTemp = CoolingTunelct
+                        CoolingTunelsec = Date.now()
+                        CoolingTunelONS = true
+                        CoolingTuneltime = Date.now()
+                      }
+                      if(CoolingTunelct > CoolingTunelactual){
+                        if(CoolingTunelflagStopped){
+                          CoolingTunelspeed = CoolingTunelct - CoolingTunelspeedTemp
+                          CoolingTunelspeedTemp = CoolingTunelct
+                          CoolingTunelsec = Date.now()
+                          CoolingTuneldeltaRejected = null
+                          CoolingTunelRejectFlag = false
+                          CoolingTuneltime = Date.now()
+                        }
+                        CoolingTunelsecStop = 0
+                        CoolingTunelstate = 1
+                        CoolingTunelflagStopped = false
+                        CoolingTunelflagRunning = true
+                      } else if( CoolingTunelct == CoolingTunelactual ){
+                        if(CoolingTunelsecStop == 0){
+                          CoolingTuneltime = Date.now()
+                          CoolingTunelsecStop = Date.now()
+                        }
+                        if( ( Date.now() - ( CoolingTuneltimeStop * 1000 ) ) >= CoolingTunelsecStop ){
+                          CoolingTunelspeed = 0
+                          CoolingTunelstate = 2
+                          CoolingTunelspeedTemp = CoolingTunelct
+                          CoolingTunelflagStopped = true
+                          CoolingTunelflagRunning = false
+                          if(CntInCoolingTunel - CntOutCoolingTunel - CoolingTunelReject.rejected != 0 && ! CoolingTunelRejectFlag){
+                            CoolingTuneldeltaRejected = CntInCoolingTunel - CntOutCoolingTunel - CoolingTunelReject.rejected
+                            CoolingTunelReject.rejected = CntInCoolingTunel - CntOutCoolingTunel
+                            fs.writeFileSync('CoolingTunelRejected.json','{"rejected": ' + CoolingTunelReject.rejected + '}')
+                            CoolingTunelRejectFlag = true
+                          }else{
+                            CoolingTuneldeltaRejected = null
+                          }
+                          CoolingTunelflagPrint = 1
+                        }
+                      }
+                      CoolingTunelactual = CoolingTunelct
+                      if(Date.now() - 60000 * CoolingTunelWorktime >= CoolingTunelsec && CoolingTunelsecStop == 0){
+                        if(CoolingTunelflagRunning && CoolingTunelct){
+                          CoolingTunelflagPrint = 1
+                          CoolingTunelsecStop = 0
+                          CoolingTunelspeed = CoolingTunelct - CoolingTunelspeedTemp
+                          CoolingTunelspeedTemp = CoolingTunelct
+                          CoolingTunelsec = Date.now()
+                        }
+                      }
+                      CoolingTunelresults = {
+                        ST: CoolingTunelstate,
+                        CPQI : CntInCoolingTunel,
+                        CPQO : CntOutCoolingTunel,
+                        //CPQR : CoolingTuneldeltaRejected,
+                        SP: CoolingTunelspeed
+                      }
+                      if (CoolingTunelflagPrint == 1) {
+                        for (var key in CoolingTunelresults) {
+                          if( CoolingTunelresults[key] != null && ! isNaN(CoolingTunelresults[key]) )
+                          //NOTE: Cambiar path
+                          fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_CoolingTunel_l2.log', 'tt=' + CoolingTuneltime + ',var=' + key + ',val=' + CoolingTunelresults[key] + '\n')
+                        }
+                        CoolingTunelflagPrint = 0
+                        CoolingTunelsecStop = 0
+                        CoolingTuneltime = Date.now()
+                      }
+                //------------------------------------------CoolingTunel----------------------------------------------
         //------------------------------------------Capper----------------------------------------------
               Capperct = CntOutCapper; // NOTE: igualar al contador de salida
               if (CapperONS == 0 && Capperct) {
@@ -735,7 +765,7 @@ client2.on('connect', function(err) {
                 ST: Depuckerstate,
                 CPQI: CntInDepucker,
                 CPQO: CntOutDepucker,
-                CPQR: DepuckerdeltaRejected,
+                //CPQR: DepuckerdeltaRejected,
                 SP: Depuckerspeed
               };
               if (DepuckerflagPrint == 1) {
@@ -1017,12 +1047,4 @@ var shutdown = function () {
   client2.close()
   client3.close()
   process.exit(0)
-}
-
-process.on('SIGTERM', shutdown)
-process.on('SIGINT', shutdown)
-//------------------------------Cerrar-código------------------------------
-
-}catch(err){
-    fs.appendFileSync("error.log",err + '\n');
 }
