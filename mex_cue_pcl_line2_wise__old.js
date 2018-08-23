@@ -483,7 +483,13 @@ client1.on('connect', function(err) {
                   FillerspeedTemp = Fillerct
                   FillerflagStopped = true
                   FillerflagRunning = false
-                  if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && ! FillerRejectFlag){
+                  FillerflagPrint = 1
+                }
+              }
+		
+		setInterval(function(){
+		
+		 if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && ! FillerRejectFlag){
                     FillerdeltaRejected = CntInFiller - CntOutFiller - FillerReject.rejected
                     FillerReject.rejected = CntInFiller - CntOutFiller
                     fs.writeFileSync('FillerRejected.json','{"rejected": ' + FillerReject.rejected + '}')
@@ -491,9 +497,8 @@ client1.on('connect', function(err) {
                   }else{
                     FillerdeltaRejected = null
                   }
-                  FillerflagPrint = 1
-                }
-              }
+			
+		},3600000)
               Filleractual = Fillerct
               if(Date.now() - 60000 * FillerWorktime >= Fillersec && FillersecStop == 0){
                 if(FillerflagRunning && Fillerct){
@@ -652,9 +657,11 @@ client2.on('connect', function(err) {
                   Capperstate = 2;
                   CapperspeedTemp = Capperct;
                   CapperflagStopped = true;
-                  CapperflagRunning = false;
-
-                  if(CntInCapper - CntOutCapper - CapperReject.rejected != 0 && ! CapperRejectFlag){
+                  CapperflagRunning = false;                 
+                }
+		
+		setInterval(function(){
+		 if(CntInCapper - CntOutCapper - CapperReject.rejected != 0 && ! CapperRejectFlag){
                     CapperdeltaRejected = CntInCapper - CntOutCapper - CapperReject.rejected;
                     CapperReject.rejected = CntInCapper - CntOutCapper;
                     fs.writeFileSync('CapperRejected.json','{"rejected": ' + CapperReject.rejected + '}');
@@ -662,7 +669,8 @@ client2.on('connect', function(err) {
                   }else{
                     CapperdeltaRejected = null;
                   }
-                }
+		},3600000)
+		      
                 if(CappersecStop % (CappertimeStop * 3) == 0 ||CappersecStop == CappertimeStop ){
                   CapperflagPrint=1;
 
