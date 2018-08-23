@@ -43,6 +43,7 @@ var Fillerct = null,
     FillerWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
     FillerflagRunning = false,
     FillerRejectFlag = false,
+    IndexFillerReject=0,
     FillerReject,
     FillerVerify = (function(){
       try{
@@ -488,16 +489,17 @@ client1.on('connect', function(err) {
                 }
               }
 		
-		setInterval(function(){
-		if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && ! FillerRejectFlag){
+		if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && ! FillerRejectFlag && IndexFillerReject=3600){
                     FillerdeltaRejected = CntInFiller - CntOutFiller - FillerReject.rejected
                     FillerReject.rejected = CntInFiller - CntOutFiller
                     fs.writeFileSync('FillerRejected.json','{"rejected": ' + FillerReject.rejected + '}')
+                    fs.writeFileSync('DateReject.json','{"rejected": ' + Date.now() + '}')
                     FillerRejectFlag = true
+			IndexFillerReject=0
                   }else{
                     FillerdeltaRejected = null
                   }
-		},3600000)
+		
 		
 			
 		
