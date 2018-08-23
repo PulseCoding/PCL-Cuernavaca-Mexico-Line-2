@@ -530,6 +530,7 @@ client1.on('connect', function(err) {
                 FillersecStop = 0
                 Fillertime = Date.now()
               }
+	IndexFillerReject++;
         //------------------------------------------Filler----------------------------------------------
 
       });//Cierre de lectura
