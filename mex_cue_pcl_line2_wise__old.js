@@ -657,11 +657,8 @@ client2.on('connect', function(err) {
                   Capperstate = 2;
                   CapperspeedTemp = Capperct;
                   CapperflagStopped = true;
-                  CapperflagRunning = false;                 
-                }
-		
-		setInterval(function(){
-		 if(CntInCapper - CntOutCapper - CapperReject.rejected != 0 && ! CapperRejectFlag){
+                  CapperflagRunning = false;  
+		if(CntInCapper - CntOutCapper - CapperReject.rejected != 0 && ! CapperRejectFlag){
                     CapperdeltaRejected = CntInCapper - CntOutCapper - CapperReject.rejected;
                     CapperReject.rejected = CntInCapper - CntOutCapper;
                     fs.writeFileSync('CapperRejected.json','{"rejected": ' + CapperReject.rejected + '}');
@@ -669,7 +666,7 @@ client2.on('connect', function(err) {
                   }else{
                     CapperdeltaRejected = null;
                   }
-		},3600000)
+                }	
 		      
                 if(CappersecStop % (CappertimeStop * 3) == 0 ||CappersecStop == CappertimeStop ){
                   CapperflagPrint=1;
