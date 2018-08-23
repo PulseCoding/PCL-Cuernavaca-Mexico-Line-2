@@ -1053,3 +1053,7 @@ var shutdown = function () {
   client3.close()
   process.exit(0)
 }
+}
+catch{
+	console.log("error")
+}
