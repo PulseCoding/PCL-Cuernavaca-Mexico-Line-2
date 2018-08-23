@@ -483,6 +483,12 @@ client1.on('connect', function(err) {
                   FillerspeedTemp = Fillerct
                   FillerflagStopped = true
                   FillerflagRunning = false
+
+                  FillerflagPrint = 1
+                }
+              }
+		
+		setInterval(function(){
 		if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && ! FillerRejectFlag){
                     FillerdeltaRejected = CntInFiller - CntOutFiller - FillerReject.rejected
                     FillerReject.rejected = CntInFiller - CntOutFiller
@@ -491,11 +497,7 @@ client1.on('connect', function(err) {
                   }else{
                     FillerdeltaRejected = null
                   }
-                  FillerflagPrint = 1
-                }
-              }
-		
-		
+		},3600000)
 		
 			
 		
