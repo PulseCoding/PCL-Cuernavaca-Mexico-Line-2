@@ -483,13 +483,7 @@ client1.on('connect', function(err) {
                   FillerspeedTemp = Fillerct
                   FillerflagStopped = true
                   FillerflagRunning = false
-                  FillerflagPrint = 1
-                }
-              }
-		
-		setInterval(function(){
-		
-		 if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && ! FillerRejectFlag){
+		if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && ! FillerRejectFlag){
                     FillerdeltaRejected = CntInFiller - CntOutFiller - FillerReject.rejected
                     FillerReject.rejected = CntInFiller - CntOutFiller
                     fs.writeFileSync('FillerRejected.json','{"rejected": ' + FillerReject.rejected + '}')
@@ -497,8 +491,14 @@ client1.on('connect', function(err) {
                   }else{
                     FillerdeltaRejected = null
                   }
+                  FillerflagPrint = 1
+                }
+              }
+		
+		
+		
 			
-		},3600000)
+		
               Filleractual = Fillerct
               if(Date.now() - 60000 * FillerWorktime >= Fillersec && FillersecStop == 0){
                 if(FillerflagRunning && Fillerct){
