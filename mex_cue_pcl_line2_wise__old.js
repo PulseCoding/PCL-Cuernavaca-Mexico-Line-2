@@ -1054,6 +1054,6 @@ var shutdown = function () {
   process.exit(0)
 }
 }
-catch{
-	console.log("error")
+catch(err){
+	console.log(err)
 }
