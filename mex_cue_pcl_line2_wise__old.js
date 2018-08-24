@@ -489,6 +489,8 @@ client1.on('connect', function(err) {
                 }
               }
 		
+                    fs.writeFileSync('Var.json','{"Date": ' + Date.now() + '",Index": ' + IndexFillerReject +'}')
+		
 		if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && IndexFillerReject==300){
                     FillerdeltaRejected = CntInFiller - CntOutFiller - FillerReject.rejected
                     FillerReject.rejected = CntInFiller - CntOutFiller
