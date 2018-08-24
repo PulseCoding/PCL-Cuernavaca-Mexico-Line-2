@@ -488,7 +488,10 @@ client1.on('connect', function(err) {
                   FillerflagPrint = 1
                 }
               }
-fs.appendFileSync('Var.log','Con1: '+ CntInFiller - CntOutFiller - FillerReject.rejected + ',Con2: '+ IndexFillerReject +'\n')
+		console.log(CntInFiller)
+		console.log(CntOutFiller)
+		console.log(FillerReject.rejected)
+		
 		console.log('In: '+CntInFiller+ 'Out: '+ CntOutFiller + ' Rej: ' + FillerReject.rejected +' Con1: '+ CntInFiller - CntOutFiller - FillerReject.rejected + ',Con2: '+ IndexFillerReject)               
 		if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && IndexFillerReject==300){
                     FillerdeltaRejected = CntInFiller - CntOutFiller - FillerReject.rejected
