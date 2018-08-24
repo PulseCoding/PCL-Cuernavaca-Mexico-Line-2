@@ -524,7 +524,7 @@ client1.on('connect', function(err) {
                 CPQR : FillerdeltaRejected,
                 SP: Fillerspeed
               }
-		console.log(Fillerresults)
+		//console.log(Fillerresults)
               if (FillerflagPrint == 1) {
                 for (var key in Fillerresults) {
                   if( Fillerresults[key] != null && ! isNaN(Fillerresults[key]) )
