@@ -488,9 +488,9 @@ client1.on('connect', function(err) {
                   FillerflagPrint = 1
                 }
               }
-		console.log(CntInFiller)
-		console.log(CntOutFiller)
-		console.log(FillerReject.rejected)
+	
+		console.log(typeOf(FillerReject.rejected))
+		console.log(FillerReject)
 		
 		console.log('In: '+CntInFiller+ 'Out: '+ CntOutFiller + ' Rej: ' + FillerReject.rejected +' Con1: '+ CntInFiller - CntOutFiller - FillerReject.rejected + ',Con2: '+ IndexFillerReject)               
 		if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && IndexFillerReject==300){
