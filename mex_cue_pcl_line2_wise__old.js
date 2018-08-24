@@ -488,9 +488,8 @@ client1.on('connect', function(err) {
                   FillerflagPrint = 1
                 }
               }
-		
-                    fs.appendFileSync('Var.log','Date: ' + Date.now() + ',Index: ' + IndexFillerReject + ',Con1: '+ CntInFiller - CntOutFiller - FillerReject.rejected != 0 + ',Con2: '+ IndexFillerReject==300 +'\n')
-		               
+fs.appendFileSync('Var.log','Date: ' + Date.now() + ',Index: ' + IndexFillerReject + ',Con1: '+ CntInFiller - CntOutFiller - FillerReject.rejected + ',Con2: '+ IndexFillerReject +'\n')
+		console.log('Date: ' + Date.now() + ',Index: ' + IndexFillerReject + ',Con1: '+ CntInFiller - CntOutFiller - FillerReject.rejected + ',Con2: '+ IndexFillerReject)               
 		if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && IndexFillerReject==300){
                     FillerdeltaRejected = CntInFiller - CntOutFiller - FillerReject.rejected
                     FillerReject.rejected = CntInFiller - CntOutFiller
