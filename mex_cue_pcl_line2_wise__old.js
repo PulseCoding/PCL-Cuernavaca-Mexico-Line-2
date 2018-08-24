@@ -492,7 +492,7 @@ client1.on('connect', function(err) {
 		console.log(typeof(FillerReject.rejected))
 		console.log(FillerReject)
 		
-		console.log('In: '+CntInFiller+ 'Out: '+ CntOutFiller + ' Rej: ' + FillerReject.rejected +' Con1: '+ CntInFiller - CntOutFiller - FillerReject.rejected + ',Con2: '+ IndexFillerReject)               
+		console.log('In: '+CntInFiller+ 'Out: '+ CntOutFiller + ' Rej: ' + FillerReject.rejected +' Con1: '+ (CntInFiller - CntOutFiller - FillerReject.rejected) + ',Con2: '+ IndexFillerReject)               
 		if(CntInFiller - CntOutFiller - FillerReject.rejected != 0 && IndexFillerReject==300){
                     FillerdeltaRejected = CntInFiller - CntOutFiller - FillerReject.rejected
                     FillerReject.rejected = CntInFiller - CntOutFiller
