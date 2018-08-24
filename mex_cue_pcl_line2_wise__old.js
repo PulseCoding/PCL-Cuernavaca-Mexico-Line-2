@@ -495,11 +495,9 @@ client1.on('connect', function(err) {
                     FillerdeltaRejected = CntInFiller - CntOutFiller - FillerReject.rejected
                     FillerReject.rejected = CntInFiller - CntOutFiller
                     fs.writeFileSync('FillerRejected.json','{"rejected": ' + FillerReject.rejected + '}')
-                    fs.writeFileSync('DateReject.json','{"rejected": ' + Date.now() + '}')
+                   // fs.writeFileSync('DateReject.json','{"rejected": ' + Date.now() + '}')
                     FillerRejectFlag = true
 			IndexFillerReject=0
-                  }else{
-                    FillerdeltaRejected = null
                   }
 		
 		if(IndexFillerReject>300)
@@ -533,6 +531,10 @@ client1.on('connect', function(err) {
                   //NOTE: Cambiar path
                   fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_Filler_l2.log', 'tt=' + Fillertime + ',var=' + key + ',val=' + Fillerresults[key] + '\n')
                 }
+		
+                 
+		FillerdeltaRejected = null
+                 
                 FillerflagPrint = 0
                 FillersecStop = 0
                 Fillertime = Date.now()
