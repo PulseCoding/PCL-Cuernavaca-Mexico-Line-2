@@ -1,0 +1,26 @@
+<service>
+	<id>pulseline2service.exe</id>
+	<name>PULSE line2 SERVICE</name>
+	<description>Control of the PULSE code</description>
+	<executable>C:\Program Files\nodejs\node.exe</executable>
+	<logmode>rotate</logmode>
+	<argument>--harmony</argument>
+	<argument>C:\Users\User\AppData\Roaming\npm\node_modules\node-windows\lib\wrapper.js</argument>
+	<argument>--file</argument>
+	<argument>C:\PULSE\Main\L2\PCL-Cuernavaca-Mexico-Line-2\mex_cue_pcl_line2_wise__old.js</argument>
+	<argument>--log</argument>
+	<argument>PULSE line2 SERVICE wrapper</argument>
+	<argument>--grow</argument>
+	<argument>0.25</argument>
+	<argument>--wait</argument>
+	<argument>1</argument>
+	<argument>--maxrestarts</argument>
+	<argument>3</argument>
+	<argument>--abortonerror</argument>
+	<argument>n</argument>
+	<argument>--stopparentfirst</argument>
+	<argument>undefined</argument>
+	<stoptimeout>30sec</stoptimeout>
+	<env name="HOME" value="C:\Users\User"/>
+	<workingdirectory>C:\PULSE\Main\L2\PCL-Cuernavaca-Mexico-Line-2</workingdirectory>
+</service>
