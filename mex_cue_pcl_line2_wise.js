@@ -706,7 +706,7 @@ try {
         //------------------------------------------Capper----------------------------------------------
         //------------------------------------------Depucker----------------------------------------------
         //------------------------------------------Depucker----------------------------------------------
-        Depuckerct = CntOutDepucker; // NOTE: igualar al contador de salida
+        Depuckerct = CntInDepucker; // NOTE: igualar al contador de salida
         if (DepuckerONS == 0 && Depuckerct) {
           DepuckerspeedTemp = Depuckerct;
           DepuckerStartTime = Date.now();
@@ -810,7 +810,7 @@ try {
         CntOutLabeller = CntInCasePacker;
 
         //------------------------------------------Labeller----------------------------------------------
-        Labellerct = CntInLabeller; // NOTE: igualar al contador de salida
+        Labellerct = CntOutLabeller; // NOTE: igualar al contador de salida
         if (LabellerONS == 0 && Labellerct) {
           LabellerspeedTemp = Labellerct;
           LabellerStartTime = Date.now();
