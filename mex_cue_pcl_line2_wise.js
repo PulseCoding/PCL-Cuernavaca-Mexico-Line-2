@@ -487,13 +487,6 @@ try {
             FillerflagPrint = 1
           }
         }
-        if (CntInFiller - CntOutFiller - FillerReject.rejected != 0 && Date.now() - 30*60000 >= IndexFillerReject) {
-          FillerdeltaRejected = CntInFiller - CntOutFiller - FillerReject.rejected
-          FillerReject.rejected = CntInFiller - CntOutFiller
-          fs.writeFileSync('FillerRejected.json', '{"rejected": ' + FillerReject.rejected + '}')
-          FillerRejectFlag = true
-          IndexFillerReject = Date.now()
-        }
 
         Filleractual = Fillerct
         if (Date.now() - 60000 * FillerWorktime >= Fillersec && FillersecStop == 0) {
@@ -509,7 +502,7 @@ try {
           ST: Fillerstate,
           CPQI: CntInFiller,
           CPQO: CntOutFiller,
-          CPQR: FillerdeltaRejected,
+          //CPQR: FillerdeltaRejected,
           SP: Fillerspeed
         }
         //console.log(Fillerresults)
@@ -582,19 +575,11 @@ try {
             CoolingTunelsecStop = Date.now()
           }
           if ((Date.now() - (CoolingTuneltimeStop * 1000)) >= CoolingTunelsecStop) {
-            CoolingTunelspeed = 0
+            //CoolingTunelspeed = 0
             CoolingTunelstate = 2
             CoolingTunelspeedTemp = CoolingTunelct
             CoolingTunelflagStopped = true
             CoolingTunelflagRunning = false
-            if (CntInCoolingTunel - CntOutCoolingTunel - CoolingTunelReject.rejected != 0 && !CoolingTunelRejectFlag) {
-              CoolingTuneldeltaRejected = CntInCoolingTunel - CntOutCoolingTunel - CoolingTunelReject.rejected
-              CoolingTunelReject.rejected = CntInCoolingTunel - CntOutCoolingTunel
-              fs.writeFileSync('CoolingTunelRejected.json', '{"rejected": ' + CoolingTunelReject.rejected + '}')
-              CoolingTunelRejectFlag = true
-            } else {
-              CoolingTuneldeltaRejected = null
-            }
             CoolingTunelflagPrint = 1
           }
         }
@@ -659,23 +644,11 @@ try {
             CapperspeedTemp = Capperct;
             CapperflagStopped = true;
             CapperflagRunning = false;
-            if (CntInCapper - CntOutCapper - CapperReject.rejected != 0 && !CapperRejectFlag) {
-              CapperdeltaRejected = CntInCapper - CntOutCapper - CapperReject.rejected;
-              CapperReject.rejected = CntInCapper - CntOutCapper;
-              fs.writeFileSync('CapperRejected.json', '{"rejected": ' + CapperReject.rejected + '}');
-              CapperRejectFlag = true;
-            } else {
-              CapperdeltaRejected = null;
-            }
+
           }
 
           if (CappersecStop % (CappertimeStop * 3) == 0 || CappersecStop == CappertimeStop) {
             CapperflagPrint = 1;
-
-            if (CappersecStop % (CappertimeStop * 3) == 0) {
-              Cappertime = Date.now();
-              CapperdeltaRejected = null;
-            }
           }
         }
         Capperactual = Capperct;
@@ -692,7 +665,7 @@ try {
           ST: Capperstate,
           CPQI: CntInCapper,
           CPQO: CntOutCapper,
-          CPQR: CapperdeltaRejected,
+          //CPQR: CapperdeltaRejected,
           SP: Capperspeed
         };
         if (CapperflagPrint == 1) {
@@ -739,14 +712,6 @@ try {
             DepuckerflagStopped = true;
             DepuckerflagRunning = false;
 
-            if (CntInDepucker - CntOutDepucker - DepuckerReject.rejected != 0 && !DepuckerRejectFlag) {
-              DepuckerdeltaRejected = CntInDepucker - CntOutDepucker - DepuckerReject.rejected;
-              DepuckerReject.rejected = CntInDepucker - CntOutDepucker;
-              fs.writeFileSync('DepuckerRejected.json', '{"rejected": ' + DepuckerReject.rejected + '}');
-              DepuckerRejectFlag = true;
-            } else {
-              DepuckerdeltaRejected = null;
-            }
           }
           if (DepuckersecStop % (DepuckertimeStop * 3) == 0 || DepuckersecStop == DepuckertimeStop) {
             DepuckerflagPrint = 1;
@@ -842,15 +807,6 @@ try {
             LabellerspeedTemp = Labellerct;
             LabellerflagStopped = true;
             LabellerflagRunning = false;
-
-            if (CntInLabeller - CntOutLabeller - LabellerReject.rejected != 0 && !LabellerRejectFlag) {
-              LabellerdeltaRejected = CntInLabeller - CntOutLabeller - LabellerReject.rejected;
-              LabellerReject.rejected = CntInLabeller - CntOutLabeller;
-              fs.writeFileSync('LabellerRejected.json', '{"rejected": ' + LabellerReject.rejected + '}');
-              LabellerRejectFlag = true;
-            } else {
-              LabellerdeltaRejected = null;
-            }
           }
           if (LabellersecStop % (LabellertimeStop * 3) == 0 || LabellersecStop == LabellertimeStop) {
             LabellerflagPrint = 1;
@@ -875,7 +831,7 @@ try {
           ST: Labellerstate,
           CPQI: CntInLabeller,
           CPQO: CntOutLabeller,
-          CPQR: LabellerdeltaRejected,
+          //CPQR: LabellerdeltaRejected,
           SP: Labellerspeed
         };
         if (LabellerflagPrint == 1) {
@@ -990,15 +946,6 @@ try {
             CheckweigherspeedTemp = Checkweigherct;
             CheckweigherflagStopped = true;
             CheckweigherflagRunning = false;
-
-            if (CntInCheckweigher - CntOutCheckweigher - CheckweigherReject.rejected != 0 && !CheckweigherRejectFlag) {
-              CheckweigherdeltaRejected = CntInCheckweigher - CntOutCheckweigher - CheckweigherReject.rejected;
-              CheckweigherReject.rejected = CntInCheckweigher - CntOutCheckweigher;
-              fs.writeFileSync('CheckweigherRejected.json', '{"rejected": ' + CheckweigherReject.rejected + '}');
-              CheckweigherRejectFlag = true;
-            } else {
-              CheckweigherdeltaRejected = null;
-            }
           }
           if (CheckweighersecStop % (CheckweighertimeStop * 3) == 0 || CheckweighersecStop == CheckweighertimeStop) {
             CheckweigherflagPrint = 1;
@@ -1023,7 +970,7 @@ try {
           ST: Checkweigherstate,
           CPQI: CntInCheckweigher,
           CPQO: CntOutCheckweigher,
-          CPQR: CheckweigherdeltaRejected,
+          //CPQR: CheckweigherdeltaRejected,
           SP: Checkweigherspeed
         };
         if (CheckweigherflagPrint == 1) {
@@ -1046,7 +993,34 @@ try {
   client3.on('close', function() {
     clearInterval(intId3);
   });
-
+  function getRejects() {
+    var CoolingTunelDif = CntInCoolingTunel - CntOutCoolingTunel
+    fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_CoolingTunel_l2.log', 'tt=' + Date.now() + ',var=CPQR,val=' + eval(CoolingTunelDif - CoolingTunelReject.rejected) + '\n')
+    CoolingTunelReject.rejected = CoolingTunelDif
+    fs.writeFileSync('FillerRejected.json', '{"rejected": ' + CoolingTunelReject.rejected + '}')
+    var FillerDif = CntInFiller - CntOutFiller
+    fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_Filler_l2.log', 'tt=' + Date.now() + ',var=CPQR,val=' + eval(FillerDif - FillerReject.rejected) + '\n')
+    FillerReject.rejected = FillerDif
+    fs.writeFileSync('FillerRejected.json', '{"rejected": ' + FillerReject.rejected + '}')
+    var CapperDif = CntInCapper - CntOutCapper
+    fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_Capper_l2.log', 'tt=' + Date.now() + ',var=CPQR,val=' + eval(CapperDif - CapperReject.rejected) + '\n')
+    CapperReject.rejected = CapperDif
+    fs.writeFileSync('CapperRejected.json', '{"rejected": ' + CapperReject.rejected + '}')
+    var DepuckerDif = CntInDepucker - CntOutDepucker
+    fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_Depucker_l2.log', 'tt=' + Date.now() + ',var=CPQR,val=' + eval(DepuckerDif - DepuckerReject.rejected) + '\n')
+    DepuckerReject.rejected = DepuckerDif
+    fs.writeFileSync('DepuckerRejected.json', '{"rejected": ' + DepuckerReject.rejected + '}')
+    var LabellerDif = CntInLabeller - CntOutLabeller
+    fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_Labeller_l2.log', 'tt=' + Date.now() + ',var=CPQR,val=' + eval(LabellerDif - LabellerReject.rejected) + '\n')
+    LabellerReject.rejected = LabellerDif
+    fs.writeFileSync('LabellerRejected.json', '{"rejected": ' + LabellerReject.rejected + '}')
+    var CheckweigherDif = CntInCheckweigher - CntOutCheckweigher
+    fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_Checkweigher_l2.log', 'tt=' + Date.now() + ',var=CPQR,val=' + eval(CheckweigherDif - CheckweigherReject.rejected) + '\n')
+    CheckweigherReject.rejected = CheckweigherDif
+    fs.writeFileSync('CheckweigherRejected.json', '{"rejected": ' + CheckweigherReject.rejected + '}')
+  }
+  setTimeout(getRejects, 60000);
+  var storeReject = setInterval(getRejects, 1740000);
   //------------------------------Cerrar-código------------------------------
   var shutdown = function() {
     client1.close()
