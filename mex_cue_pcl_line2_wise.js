@@ -993,7 +993,7 @@ try {
   client3.on('close', function() {
     clearInterval(intId3);
   });
-  function getRejects() {
+ /* function getRejects() {
     var CoolingTunelDif = CntInCoolingTunel - CntOutCoolingTunel
     fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_CoolingTunel_l2.log', 'tt=' + Date.now() + ',var=CPQR,val=' + eval(CoolingTunelDif - CoolingTunelReject.rejected) + '\n')
     CoolingTunelReject.rejected = CoolingTunelDif
@@ -1018,9 +1018,9 @@ try {
     fs.appendFileSync('C:/PULSE/L2_LOGS/CUE_PCL_Checkweigher_l2.log', 'tt=' + Date.now() + ',var=CPQR,val=' + eval(CheckweigherDif - CheckweigherReject.rejected) + '\n')
     CheckweigherReject.rejected = CheckweigherDif
     fs.writeFileSync('CheckweigherRejected.json', '{"rejected": ' + CheckweigherReject.rejected + '}')
-  }
-  setTimeout(getRejects, 60000);
-  var storeReject = setInterval(getRejects, 1740000);
+  }*/
+ // setTimeout(getRejects, 60000);
+  //var storeReject = setInterval(getRejects, 1740000);
   //------------------------------Cerrar-código------------------------------
   var shutdown = function() {
     client1.close()
